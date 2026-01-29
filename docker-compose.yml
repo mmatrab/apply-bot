@@ -1,0 +1,25 @@
+version: "3"
+
+services:                   
+  tests:
+    build:
+      context: ./wttj
+    image: 'selenium-tests:latest'
+    networks: 
+      - default    
+    command: ["python3", "main.py"]
+    depends_on:
+      browser:
+        condition: service_healthy    
+  browser:
+    image: selenium/standalone-chrome:91.0
+    ports:
+      - '${NO_VNC_PORT}:7900'
+      - 4444:4444
+    shm_size: 2g
+    healthcheck:
+        test: ["CMD", "curl", "-f", "http://localhost:4444"]
+        interval: 30s
+        timeout: 10s
+        retries: 3
+        start_period: 20s                  
