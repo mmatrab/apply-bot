@@ -5,4 +5,8 @@
 # source files
 !*.py
 
-!*.json
+# Data file used by the bot
+!applied_jobs_list.json
+
+# Never bake local credentials into the image
+cred.json

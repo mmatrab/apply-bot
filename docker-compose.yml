@@ -7,12 +7,21 @@ services:
     image: 'selenium-tests:latest'
     networks: 
       - default    
+    volumes:
+      # Provide local credentials at runtime (kept out of the image and git)
+      - ./wttj/cred.json:/workspaces/tests/cred.json:ro
+      # Persist applied jobs list on the host
+      - ./wttj/applied_jobs_list.json:/workspaces/tests/applied_jobs_list.json
     command: ["python3", "main.py"]
     depends_on:
       browser:
         condition: service_healthy    
   browser:
     image: selenium/standalone-chrome:91.0
+    environment:
+      # Disable VNC password prompt in noVNC UI (http://localhost:${NO_VNC_PORT}).
+      # If you prefer a password instead, remove this and set SE_VNC_PASSWORD.
+      - SE_VNC_NO_PASSWORD=1
     ports:
       - '${NO_VNC_PORT}:7900'
       - 4444:4444
