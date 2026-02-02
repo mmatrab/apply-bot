@@ -19,9 +19,9 @@ services:
   browser:
     image: selenium/standalone-chrome:91.0
     environment:
-      # Disable VNC password prompt in noVNC UI (http://localhost:${NO_VNC_PORT}).
-      # If you prefer a password instead, remove this and set SE_VNC_PASSWORD.
-      - SE_VNC_NO_PASSWORD=1
+      # Disable VNC password authentication (noVNC UI may still show a prompt,
+      # but leaving it blank will work).
+      - VNC_NO_PASSWORD=1
     ports:
       - '${NO_VNC_PORT}:7900'
       - 4444:4444
